@@ -25,20 +25,39 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-image: url(../src/assets/trade.jpg);
   background-size: auto 100%;
   background-repeat: no-repeat;
   background-position: center;
+  display:flex;
+  justify-content: center;
+  background-color: #252525;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
+.note {
+  font-size: .7rem;
+  text-align: center;
+  margin: 1rem;
+  max-width: 30rem;
+}
+.trader {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: clamp(250px, 50vw, 400px);
+  image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated;                 /* Universal support since 2021   */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+     */
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -46,9 +65,21 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #00ac98d1;
   cursor: pointer;
   transition: border-color 0.25s;
+}
+input[type=file] {
+  padding-left: 2rem;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  width: 15rem;
+}
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 button:hover {
   border-color: #646cff;
@@ -69,8 +100,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
-
-input {
-  padding-left: 3rem;
 }

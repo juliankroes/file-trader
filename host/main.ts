@@ -25,8 +25,9 @@ router.get("/start_web_socket", async (ctx) => {
     }
 
     socket.onmessage = async (message: MessageEvent) => {
-        console.log(message.data)
-        socket.send(JSON.stringify(currentlyStoredFile))
+        if (currentlyStoredFile) {
+            socket.send(JSON.stringify(currentlyStoredFile))
+        }
         currentlyStoredFile = JSON.parse(message.data)
     }
 })

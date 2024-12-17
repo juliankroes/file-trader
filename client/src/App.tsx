@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import useWebSocket from 'react-use-websocket'
+import traderImage from './assets/trader.gif'
 
 interface storedFile {
   rawData: ArrayBuffer,
@@ -11,9 +12,16 @@ interface storedFile {
 function App() {
   const url = 'https://juliankroes-file-trade-73.deno.dev/start_web_socket'
   const { sendMessage, lastMessage } = useWebSocket(url);
+  const [newFile, setNewFile] = useState<storedFile | null>(null)
+  const [uploadedFile, setUploadedFile] = useState<boolean>(false)
+  const [downloadedFile, setDownloadedFile] = useState<boolean>(false)
+
 
   useEffect(() => {
     if (lastMessage !== null) {
+      if (lastMessage.data == 'undefined') {
+        return
+      }
       console.log(lastMessage)
       const retrievedFile = JSON.parse(lastMessage.data)
       
@@ -25,7 +33,7 @@ function App() {
       }
       
       console.log(file)
-      download(file)
+      setNewFile(file)
     }
   }, [lastMessage])
 
@@ -45,10 +53,13 @@ function App() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
+
+    setDownloadedFile(true)
   }
   
 
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setUploadedFile(true)
     const files = e.target.files ? Array.from(e.target.files) : []
     if (files.length === 0) return
     const file = files[0]
@@ -69,19 +80,32 @@ function App() {
     reader.readAsArrayBuffer(file)
   }
 
-
-
-
   return (
     <>
       <div>
         <div className='container'>
           <h1>file trader</h1>
-          <input type="file" onChange={handleFileSelected} />
+          <h2>1. upload file</h2>
+          <input id='file-upload' type="file" onChange={handleFileSelected} />
+          {
+            uploadedFile && !newFile
+            ? <div className="spinner-border" role="status"><br /><span className="sr-only"><img width="40px" src="https://discuss.wxpython.org/uploads/default/original/2X/6/6d0ec30d8b8f77ab999f765edd8866e8a97d59a3.gif" alt="" /></span></div> 
+            : null
+          } 
+          {
+            newFile ? 
+            <><h2>2. Download a file</h2><button className='btn btn-primary' onClick={() => download(newFile)}>download {newFile.filename}</button></>
+            : null
+          }
+          {
+            downloadedFile ?
+            <><h2>3. enjoy your traded file!</h2><i className='note'>I am not responsible for any malware, illegal content or other harmful files you might recieve.</i></>
+            : null
+          }
         </div>
+        <img src={traderImage} alt="trader" className='trader' />
       </div>
     </>
   )
 }
-
 export default App
