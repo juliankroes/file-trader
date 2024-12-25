@@ -11,6 +11,7 @@ interface storedFile {
 
 function App() {
   const url = 'https://juliankroes-file-trade-73.deno.dev/start_web_socket'
+  // const url = 'http://localhost:6969/start_web_socket'
   const { sendMessage, lastMessage } = useWebSocket(url);
   const [newFile, setNewFile] = useState<storedFile | null>(null)
   const [uploadedFile, setUploadedFile] = useState<boolean>(false)
